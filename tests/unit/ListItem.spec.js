@@ -10,6 +10,7 @@ jest.mock("../../src/utils/flag", () => ({
   },
 }));
 
+// Describe ListItem with test user and example link
 describe("ListItem.vue", () => {
   const defaultProps = {
     title: "Test Article",
