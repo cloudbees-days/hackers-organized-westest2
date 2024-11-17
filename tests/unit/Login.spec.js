@@ -27,6 +27,7 @@ describe("Login.vue", () => {
     });
   };
 
+  // Adding a comment to force pull request and merge - WesTest
   it("renders login form correctly", () => {
     const { getByText, getByLabelText, getByRole } = renderLogin();
 
