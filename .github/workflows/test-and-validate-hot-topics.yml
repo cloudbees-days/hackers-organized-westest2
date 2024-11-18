@@ -1,0 +1,61 @@
+name: Test and Validate Hot Posts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-hot-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install puppeteer
+
+    - name: Run website validation script
+      env:
+        TARGET_URL: https://hackers-organized-prod.preview.cb-demos.io/
+      run: |
+        echo "
+        const puppeteer = require('puppeteer');
+
+        (async () => {
+          const browser = await puppeteer.launch();
+          const page = await browser.newPage();
+          await page.goto(process.env.TARGET_URL, { waitUntil: 'networkidle2' });
+
+          console.log('Navigated to ' + process.env.TARGET_URL);
+
+          // Click on the first 5 hot posts
+          for (let i = 1; i <= 5; i++) {
+            try {
+              const postSelector = \`#hot-posts .post:nth-child(\${i})\`;
+              await page.waitForSelector(postSelector);
+              await page.click(postSelector);
+              console.log(\`Clicked on hot post #\${i}\`);
+
+              // Navigate back to main page
+              await page.goBack({ waitUntil: 'networkidle2' });
+            } catch (error) {
+              console.error(\`Failed to click on hot post #\${i}: \`, error);
+            }
+          }
+
+          await browser.close();
+        })();
+        " > validate_hot_posts.js
+
+    - name: Run validation script
+      run: node validate_hot_posts.js
