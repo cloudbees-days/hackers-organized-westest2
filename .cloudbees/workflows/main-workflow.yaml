@@ -193,11 +193,10 @@ jobs:
         kind: test
         continue-on-error: false
         with:
+          token: ${{ secrets.GH_TOKEN }}
           org-name: cloudbees-days
           repo-name: hackers-organized-westest2
           branch-name: main
           workflow-name: test-and-validate-hot-topics
-          test-result-location: validatetest.xml
-          url: https://github.com/cloudbees-days/hackers-organized-westest2/tree/main/.github/workflows
-          token: ${{ secrets.GH_TOKEN }}
+          test-result-location: validatetest.xml          
     needs: deploy
