@@ -186,3 +186,18 @@ jobs:
     needs:
       - build-container-image
       - scan
+  validate:
+    steps:
+      - uses: cloudbees-io/ghactions-run-workflow@v2
+        name: validate
+        kind: test
+        continue-on-error: false
+        with:
+          org-name: cloudbees-days
+          repo-name: hackers-organized
+          branch-name: main
+          workflow-name: test-and-validate-hot-topics
+          test-result-location: validatetest.xml
+          url: https://github.com/cloudbees-days/hackers-organized-westest2/tree/main/.github/workflows
+          token: ${{ secrets.GH_TOKEN }}
+    needs: deploy
