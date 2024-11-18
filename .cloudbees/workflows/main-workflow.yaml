@@ -194,7 +194,7 @@ jobs:
         continue-on-error: false
         with:
           org-name: cloudbees-days
-          repo-name: hackers-organized
+          repo-name: hackers-organized-westest2
           branch-name: main
           workflow-name: test-and-validate-hot-topics
           test-result-location: validatetest.xml
